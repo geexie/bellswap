@@ -1,2 +1,9 @@
 .venv
 .ipynb_*
+pyvenv.cfg
+bin
+etc
+lib
+share
+*.png
+PC5228Qiskit*.ipynb
