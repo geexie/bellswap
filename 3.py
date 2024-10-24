@@ -17,7 +17,7 @@ bell.h(0)
 bell.cx(0, 1)
 
 # bell.x(2)
-bell.x(3)
+# bell.x(3)
 bell.h(2)
 bell.cx(2, 3)
 bell.barrier()
@@ -37,31 +37,31 @@ bell.cx(0,3)
 bell.h(0)
 bell.barrier()
 
-bell.measure([0, 3],[0, 1])
+# bell.measure([0, 3],[0, 1])
 bell = bell.reverse_bits()
 
 # sv_prepare = Statevector([1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]) # \Phi^+\Phi^+
 sv_prepare = Statevector([0,0,1,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]) # \Phi^+\Phi^-
-sv_prepare = Statevector([0,1,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]) # \Phi^+\Psy^+
-# new_sv_prepare = sv_prepare.evolve(bell)
+sv_prepare = Statevector([0,0,1,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]) # \Phi^+\Phi^-
+new_sv_prepare = sv_prepare.evolve(bell)
 
-# print(new_sv_prepare)
-# plot_state_qsphere(new_sv_prepare, filename="sv3.png")
+print(new_sv_prepare)
+plot_state_qsphere(new_sv_prepare, filename="sv3.png")
 
 print("Original Circuit:")
 print(bell)
-bell.draw("mpl", filename="c_3.png")
+bell.draw("mpl", filename="c3.png")
 
-# Use the Sampler to simulate the circuit
-sampler = Sampler()
-job = sampler.run(circuits=bell, shots=1024)
-result = job.result()
+# # Use the Sampler to simulate the circuit
+# sampler = Sampler()
+# job = sampler.run(circuits=bell, shots=1024)
+# result = job.result()
 
-# Get the result counts and convert quasi-probabilities to probabilities
-counts = result.quasi_dists[0].binary_probabilities()
+# # Get the result counts and convert quasi-probabilities to probabilities
+# counts = result.quasi_dists[0].binary_probabilities()
 
-# print result
-print("Measuremet result:", result.quasi_dists[0])
+# # print result
+# print("Measuremet result:", result.quasi_dists[0])
 
-# Plot the result as a histogram
-plot_histogram(counts, filename="h_3.png")
+# # Plot the result as a histogram
+# plot_histogram(counts, filename="h.png")

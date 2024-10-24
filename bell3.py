@@ -26,7 +26,7 @@ bell.s(2)
 bell.x(2)
 bell.cx(2, 3)
 
-full = False# False #True
+full = True# False #True
 if (full == True):
     bell.barrier()
 
@@ -52,7 +52,7 @@ if (full == True):
     bell.rx(-pi/3,0)
     bell.barrier()
 
-evolve = True #False# 
+evolve = False #True #False#
 if (evolve == True):
     bell = bell.reverse_bits()
     sv_prepare = Statevector([1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0])
