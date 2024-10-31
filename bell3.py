@@ -13,14 +13,16 @@ from numpy import sqrt, pi
 cr=ClassicalRegister(2,'c')
 bell = QuantumCircuit(QuantumRegister(1, 'A'), QuantumRegister(1, 'B'), QuantumRegister(1, 'C'), QuantumRegister(1, 'D'), cr)
 
+# Z -> RBell
 bell.rx(pi/3,0)
 bell.s(0)
 bell.x(0)
 bell.cx(0, 1)
 
-# for \Psi+
+# for \Psi^+
 bell.x(3)
 
+# Z -> RBell
 bell.rx(pi/3,2)
 bell.s(2)
 bell.x(2)
@@ -30,7 +32,7 @@ full = True# False #True
 if (full == True):
     bell.barrier()
 
-    # Bell measurement of 1 and 2
+    # RBell -> Z
     bell.cx(1, 2)
     bell.x(1)
     bell.z(1)
@@ -40,11 +42,10 @@ if (full == True):
 
     # recover original bell state
     bell.cx(2, 0)
-    # bell.crx(pi/3,2,0)
     bell.cz(1, 0)
     bell.barrier()
 
-    # reverce 0,3 to computational basis
+    # Z -> RBell (0,3)
     bell.cx(0, 3)
     bell.x(0)
     bell.z(0)

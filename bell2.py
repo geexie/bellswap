@@ -29,15 +29,12 @@ full = True# False #True
 if (full == True):
     bell.barrier()
 
-    # ~Bell measurement of 1 and 2
     # HBell -> Z
     bell.h(1)
     bell.cx(1,2)
     bell.h(1)
     bell.barrier()
-    # bell.measure([1,2],[0,1])
 
-    # deferred measurement principal
     # recover original bell state
     bell.cx(2, 0)
     bell.cz(1, 0)
