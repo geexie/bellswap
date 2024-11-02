@@ -1,7 +1,7 @@
 # # Import necessary libraries from Qiskit
 from qiskit import QuantumCircuit
 from qiskit.circuit import QuantumRegister, ClassicalRegister
-from qiskit.primitives import Sampler
+from qiskit.primitives import StatevectorSampler
 from qiskit.quantum_info import Statevector
 from qiskit.visualization import plot_histogram
 from qiskit.visualization import plot_state_qsphere
@@ -83,18 +83,12 @@ def entanglement_swapping(B, Bd, makePsi, name, full, evolve):
         print(bell)
         bell.draw("mpl", filename="c_"+name+".png")
 
-        # Use the Sampler to simulate the circuit
-        sampler = Sampler()
-        job = sampler.run(circuits=bell, shots=1024)
-        result = job.result()
-
-        # Get the result counts and convert quasi-probabilities to probabilities
-        counts = result.quasi_dists[0].binary_probabilities()
-
-        # print result
-        print("Measuremet result:", result.quasi_dists[0])
-
-        # Plot the result as a histogram
+        nshots = 1024
+        sampler = StatevectorSampler()
+        result = sampler.run([bell], shots=nshots).result()
+        counts = result[0].data.c.get_counts()
+        counts = {k: (v / nshots )  for (k, v) in counts.items() }
+        print (counts)
         plot_histogram(counts, filename="h_"+name+".png")
 
 # visualize initial state vector
