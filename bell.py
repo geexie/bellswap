@@ -1,4 +1,3 @@
-# # Import necessary libraries from Qiskit
 from qiskit import QuantumCircuit
 from qiskit.circuit import QuantumRegister, ClassicalRegister
 from qiskit.primitives import StatevectorSampler
@@ -46,11 +45,11 @@ def makePsi(a):
         circuit.x(a)
     return f
 
-def entanglement_swapping(basis, makePsi, name, full, evolve):
-    # Create a Bell state quantum circuit
+def entanglement_swapping(basis, makePsi, full, evolve):
     cr = ClassicalRegister(2,'c')
     bell = QuantumCircuit(QuantumRegister(1, 'A'), QuantumRegister(1, 'B'), QuantumRegister(1, 'C'), QuantumRegister(1, 'D'), cr)
 
+    name = basis.__name__.lower()
     (B, Bd) = basis()
     makePsi(bell)
 
@@ -92,30 +91,30 @@ def entanglement_swapping(basis, makePsi, name, full, evolve):
         plot_histogram(counts, filename="h_"+name+".png")
 
 # visualize initial state vector
-entanglement_swapping(Bell, makePsi(3), name="bell", full=False, evolve=True)
+entanglement_swapping(Bell, makePsi(3), full=False, evolve=True)
 
 # visualize resuling state vector
-entanglement_swapping(Bell, makePsi(3), name="bell", full=True, evolve=True)
+entanglement_swapping(Bell, makePsi(3), full=True, evolve=True)
 
 # perform simulation
-entanglement_swapping(Bell, makePsi(3), name="bell", full=True, evolve=False)
+entanglement_swapping(Bell, makePsi(3), full=True, evolve=False)
 
 
 # visualize initial state vector
-entanglement_swapping(XBell, makePsi(2), name="xbell", full=False, evolve=True)
+entanglement_swapping(XBell, makePsi(2), full=False, evolve=True)
 
 # visualize resuling state vector
-entanglement_swapping(XBell, makePsi(2), name="xbell", full=True, evolve=True)
+entanglement_swapping(XBell, makePsi(2), full=True, evolve=True)
 
 # perform simulation
-entanglement_swapping(XBell, makePsi(2), name="xbell", full=True, evolve=False)
+entanglement_swapping(XBell, makePsi(2), full=True, evolve=False)
 
 
 # visualize initial state vector
-entanglement_swapping(RBell, makePsi(3), name="rbell", full=False, evolve=True)
+entanglement_swapping(RBell, makePsi(3), full=False, evolve=True)
 
 # visualize resuling state vector
-entanglement_swapping(RBell, makePsi(3), name="rbell", full=True, evolve=True)
+entanglement_swapping(RBell, makePsi(3), full=True, evolve=True)
 
 # perform simulation
-entanglement_swapping(RBell, makePsi(3), name="rbell", full=True, evolve=False)
+entanglement_swapping(RBell, makePsi(3), full=True, evolve=False)
