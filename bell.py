@@ -8,49 +8,50 @@ from qiskit.visualization import plot_state_qsphere
 from numpy import pi
 
 # B and B^{\dagger} for Z<->Bell conversion
-def BBell(circuit, a, b):
-    circuit.h(a)
-    circuit.cx(a, b)
-
-def BdBell(circuit, a, b):
-    circuit.cx(a, b)
-    circuit.h(a)
+def Bell():
+    def B(circuit, a, b):
+        circuit.h(a)
+        circuit.cx(a, b)
+    def Bd(circuit, a, b):
+        circuit.cx(a, b)
+        circuit.h(a)
+    return (B, Bd)
 
 # B and B^{\dagger} for Z<->X-Bell conversion
-def BXBell(circuit, a, b):
-    circuit.h(a)
-    circuit.cx(a, b)
-    circuit.h(a)
-
-def BdXBell(circuit, a, b):
-    circuit.h(a)
-    circuit.cx(a, b)
-    circuit.h(a)
+def XBell():
+    def B(circuit, a, b):
+        circuit.h(a)
+        circuit.cx(a, b)
+        circuit.h(a)
+    return (B, B)
 
 # B and B^{\dagger} for Z<->R_x-Bell conversion
-def BRBell(circuit, a, b):
-    circuit.rx(pi/3, a)
-    circuit.s(a)
-    circuit.x(a)
-    circuit.cx(a, b)
+def RBell():
+    def B(circuit, a, b):
+        circuit.rx(pi/3, a)
+        circuit.s(a)
+        circuit.x(a)
+        circuit.cx(a, b)
 
-def BdRBell(circuit, a, b):
-    circuit.cx(a, b)
-    circuit.x(a)
-    circuit.z(a)
-    circuit.s(a)
-    circuit.rx(-pi/3, a)
+    def Bd(circuit, a, b):
+        circuit.cx(a, b)
+        circuit.x(a)
+        circuit.z(a)
+        circuit.s(a)
+        circuit.rx(-pi/3, a)
+    return (B, Bd)
 
 def makePsi(a):
     def f(circuit):
         circuit.x(a)
     return f
 
-def entanglement_swapping(B, Bd, makePsi, name, full, evolve):
+def entanglement_swapping(basis, makePsi, name, full, evolve):
     # Create a Bell state quantum circuit
     cr = ClassicalRegister(2,'c')
     bell = QuantumCircuit(QuantumRegister(1, 'A'), QuantumRegister(1, 'B'), QuantumRegister(1, 'C'), QuantumRegister(1, 'D'), cr)
 
+    (B, Bd) = basis()
     makePsi(bell)
 
     B(bell, 0, 1)
@@ -79,7 +80,6 @@ def entanglement_swapping(B, Bd, makePsi, name, full, evolve):
     else:
         bell.measure([0, 3],[0, 1])
         bell = bell.reverse_bits()
-        print("Original Circuit:")
         print(bell)
         bell.draw("mpl", filename="c_"+name+".png")
 
@@ -92,30 +92,30 @@ def entanglement_swapping(B, Bd, makePsi, name, full, evolve):
         plot_histogram(counts, filename="h_"+name+".png")
 
 # visualize initial state vector
-entanglement_swapping(BBell, BdBell, makePsi(3), name="bell", full=False, evolve=True)
+entanglement_swapping(Bell, makePsi(3), name="bell", full=False, evolve=True)
 
 # visualize resuling state vector
-entanglement_swapping(BBell, BdBell, makePsi(3), name="bell", full=True, evolve=True)
+entanglement_swapping(Bell, makePsi(3), name="bell", full=True, evolve=True)
 
 # perform simulation
-entanglement_swapping(BBell, BdBell, makePsi(3), name="bell", full=True, evolve=False)
+entanglement_swapping(Bell, makePsi(3), name="bell", full=True, evolve=False)
 
 
 # visualize initial state vector
-entanglement_swapping(BXBell, BdXBell, makePsi(2), name="xbell", full=False, evolve=True)
+entanglement_swapping(XBell, makePsi(2), name="xbell", full=False, evolve=True)
 
 # visualize resuling state vector
-entanglement_swapping(BXBell, BdXBell, makePsi(2), name="xbell", full=True, evolve=True)
+entanglement_swapping(XBell, makePsi(2), name="xbell", full=True, evolve=True)
 
 # perform simulation
-entanglement_swapping(BXBell, BdXBell, makePsi(2), name="xbell", full=True, evolve=False)
+entanglement_swapping(XBell, makePsi(2), name="xbell", full=True, evolve=False)
 
 
 # visualize initial state vector
-entanglement_swapping(BRBell, BdRBell, makePsi(3), name="rbell", full=False, evolve=True)
+entanglement_swapping(RBell, makePsi(3), name="rbell", full=False, evolve=True)
 
 # visualize resuling state vector
-entanglement_swapping(BRBell, BdRBell, makePsi(3), name="rbell", full=True, evolve=True)
+entanglement_swapping(RBell, makePsi(3), name="rbell", full=True, evolve=True)
 
 # perform simulation
-entanglement_swapping(BRBell, BdRBell, makePsi(3), name="rbell", full=True, evolve=False)
+entanglement_swapping(RBell, makePsi(3), name="rbell", full=True, evolve=False)
